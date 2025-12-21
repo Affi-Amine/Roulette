@@ -18,6 +18,7 @@ interface Prize {
 type AppState =
   | "landing"
   | "scanner"
+  | "verifying"
   | "wheel"
   | "results"
   | "success"
@@ -38,6 +39,7 @@ export function PizzaRouletteApp() {
   const [spinIds, setSpinIds] = useState<string[]>([])
 
   const handleScanSuccess = async (code: string) => {
+    setCurrentState("verifying")
     try {
       let payload: any
       try {
@@ -138,6 +140,15 @@ export function PizzaRouletteApp() {
       {currentState === "landing" && <LandingPage onStartScan={() => setCurrentState("scanner")} />}
 
       {currentState === "scanner" && <QRScanner onScanSuccess={handleScanSuccess} onBack={handleBackToLanding} />}
+      
+      {currentState === "verifying" && (
+        <div className="fixed inset-0 bg-black flex items-center justify-center text-white">
+          <div className="text-center">
+             <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-500 mx-auto mb-4"></div>
+             <p className="text-xl">Verifying Ticket...</p>
+          </div>
+        </div>
+      )}
 
       {currentState === "wheel" && currentPrize === null && (
         <PrizeWheel onSpinComplete={handleSpinComplete} spinsRemaining={spinsRemaining} />
