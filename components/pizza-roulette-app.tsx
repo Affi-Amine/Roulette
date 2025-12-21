@@ -63,6 +63,11 @@ export function PizzaRouletteApp() {
         } else if (res.status === 400) {
           setErrorType("invalid")
           setCurrentState("error-invalid")
+        } else {
+          // Fallback for 500s or other unexpected errors
+          console.error("Verification failed:", res.status, data)
+          setErrorType("invalid")
+          setCurrentState("error-invalid")
         }
         return
       }
