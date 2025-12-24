@@ -10,9 +10,9 @@ export async function GET(req: NextRequest) {
   const { data: users } = await supabase
     .from("users")
     .select(
-      `id,name,phone,user_prizes(id,status,created_at,prize:prizes(name,emoji,color))`
+      `id,name,email,user_prizes(id,status,created_at,prize:prizes(name,emoji,color))`
     )
-    .or(`name.ilike.%${query}%,phone.ilike.%${query}%`)
+    .or(`name.ilike.%${query}%,email.ilike.%${query}%`)
 
   return NextResponse.json({ users })
 }

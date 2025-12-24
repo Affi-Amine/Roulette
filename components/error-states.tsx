@@ -11,12 +11,12 @@ interface ErrorAlreadyUsedProps {
 export function ErrorAlreadyUsed({ onRetry }: ErrorAlreadyUsedProps) {
   return (
     <motion.div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
       <motion.div
-        className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl"
+        className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-[8px_8px_0_rgba(0,0,0,1)] border-4 border-black"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", damping: 20 }}
@@ -27,26 +27,26 @@ export function ErrorAlreadyUsed({ onRetry }: ErrorAlreadyUsedProps) {
           animate={{ rotate: [0, 5, -5, 0] }}
           transition={{ duration: 0.5, repeat: Number.POSITIVE_INFINITY, repeatDelay: 2 }}
         >
-          <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center">
-            <AlertTriangle className="w-8 h-8 text-orange-600" />
+          <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center border-4 border-black">
+            <AlertTriangle className="w-8 h-8 text-black" />
           </div>
         </motion.div>
 
         {/* Error Title */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Ticket Already Used</h2>
+        <h2 className="text-2xl font-black text-black mb-3 uppercase">Déjà joué !</h2>
 
         {/* Error Message */}
-        <p className="text-gray-600 mb-8">
-          This ticket has already been scanned and used. Each ticket can only be used once.
+        <p className="text-gray-600 mb-8 font-bold">
+          Tu as déjà tenté ta chance aujourd'hui. Reviens demain pour une nouvelle part de bonheur !
         </p>
 
         {/* Try Another Button */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             onClick={onRetry}
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg"
+            className="w-full bg-primary hover:bg-red-700 text-white font-black py-3 rounded-lg border-2 border-black shadow-[4px_4px_0_rgba(0,0,0,1)] uppercase"
           >
-            TRY ANOTHER TICKET
+            OK, À DEMAIN
           </Button>
         </motion.div>
       </motion.div>
@@ -61,12 +61,12 @@ interface ErrorInvalidQRProps {
 export function ErrorInvalidQR({ onRetry }: ErrorInvalidQRProps) {
   return (
     <motion.div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
       <motion.div
-        className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl"
+        className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-[8px_8px_0_rgba(0,0,0,1)] border-4 border-black"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", damping: 20 }}
@@ -77,23 +77,23 @@ export function ErrorInvalidQR({ onRetry }: ErrorInvalidQRProps) {
           animate={{ x: [-5, 5, -5, 5, 0] }}
           transition={{ duration: 0.5, repeat: Number.POSITIVE_INFINITY, repeatDelay: 2 }}
         >
-          <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-            <AlertCircle className="w-8 h-8 text-red-600" />
+          <div className="w-16 h-16 rounded-full bg-destructive flex items-center justify-center border-4 border-black">
+            <AlertCircle className="w-8 h-8 text-black" />
           </div>
         </motion.div>
 
         {/* Error Title */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Invalid QR Code</h2>
+        <h2 className="text-2xl font-black text-black mb-3 uppercase">Mamma Mia !</h2>
 
         {/* Error Message */}
-        <p className="text-gray-600 mb-8">
-          This QR code is not recognized. Please scan the QR code on your pizza receipt.
+        <p className="text-gray-600 mb-8 font-bold">
+          Une erreur est survenue. Rafraîchis la page et réessaie.
         </p>
 
         {/* Scan Again Button */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button onClick={onRetry} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg">
-            SCAN AGAIN
+          <Button onClick={onRetry} className="w-full bg-black text-white font-black py-3 rounded-lg border-2 border-white shadow-[4px_4px_0_rgba(255,255,255,0.5)] uppercase">
+            RÉESSAYER
           </Button>
         </motion.div>
       </motion.div>

@@ -17,14 +17,14 @@ interface PrizeWheelProps {
 }
 
 const PRIZES: Prize[] = [
-  { id: "1", name: "Free Medium Pizza", emoji: "🍕", color: "#E63946" },
-  { id: "2", name: "Free Large Pizza", emoji: "🍕", color: "#F77F00" },
-  { id: "3", name: "20% Off Next Order", emoji: "🎟️", color: "#FCBF49" },
-  { id: "4", name: "Free Sides", emoji: "🍟", color: "#06A77D" },
-  { id: "5", name: "Free Dessert", emoji: "🍰", color: "#E63946" },
-  { id: "6", name: "Free Drink", emoji: "🥤", color: "#F77F00" },
-  { id: "7", name: "Free Sauce Pack", emoji: "🧂", color: "#FCBF49" },
-  { id: "8", name: "Double Points", emoji: "⭐", color: "#06A77D" },
+  { id: "1", name: "Pizza", emoji: "🍕", color: "#e63946" },
+  { id: "2", name: "Coca", emoji: "🥤", color: "#f9c80e" },
+  { id: "3", name: "Dessert", emoji: "🍰", color: "#2a9d8f" },
+  { id: "4", name: "Café", emoji: "☕", color: "#e63946" },
+  { id: "5", name: "Pizza", emoji: "🍕", color: "#f9c80e" },
+  { id: "6", name: "Coca", emoji: "🥤", color: "#2a9d8f" },
+  { id: "7", name: "Dessert", emoji: "🍰", color: "#e63946" },
+  { id: "8", name: "Café", emoji: "☕", color: "#f9c80e" },
 ]
 
 export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) {
@@ -51,22 +51,28 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-yellow-50 px-4 py-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-primary px-4 py-8 font-sans">
+      {/* Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
+
       {/* Header */}
-      <motion.div className="text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">You Have {spinsRemaining} Spins! 🎉</h1>
-        <p className="text-gray-600">Spin the wheel to win amazing prizes</p>
+      <motion.div className="text-center mb-8 relative z-10" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-3xl font-black text-white mb-2 uppercase drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">À toi de jouer ! 🎉</h1>
+        <p className="text-white font-bold drop-shadow-md">Tourne la roue pour découvrir ton cadeau</p>
       </motion.div>
 
       {/* Wheel Container */}
-      <div className="relative w-72 h-72 mb-8 flex items-center justify-center">
+      <div className="relative w-80 h-80 mb-12 flex items-center justify-center z-10">
         {/* Pointer Triangle at Top */}
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-red-600 drop-shadow-lg" />
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[20px] border-r-[20px] border-t-[30px] border-l-transparent border-r-transparent border-t-black drop-shadow-lg" />
+
+        {/* Wheel Border */}
+        <div className="absolute inset-0 rounded-full border-8 border-black shadow-[8px_8px_0_rgba(0,0,0,0.2)] bg-white" />
 
         {/* Wheel */}
         <motion.svg
           viewBox="0 0 280 280"
-          className="w-full h-full"
+          className="relative z-10 w-full h-full p-2"
           animate={{ rotate: rotation }}
           transition={{
             duration: 4,
@@ -86,7 +92,7 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
                 <path
                   d={describeArc(140, 140, 120, startAngle, endAngle)}
                   fill={prize.color}
-                  stroke="white"
+                  stroke="black"
                   strokeWidth="2"
                 />
 
@@ -96,8 +102,8 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
                   y="140"
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill="white"
-                  fontSize="12"
+                  fill="black"
+                  fontSize="14"
                   fontWeight="bold"
                   transform={`rotate(${startAngle + 45} 140 140)`}
                   className="pointer-events-none"

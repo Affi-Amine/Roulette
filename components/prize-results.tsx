@@ -22,21 +22,21 @@ interface PrizeResultsProps {
 
 export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
   const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({})
+  const [email, setEmail] = useState("")
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateForm = () => {
-    const newErrors: { name?: string; phone?: string } = {}
+    const newErrors: { name?: string; email?: string } = {}
 
     if (!name.trim()) {
-      newErrors.name = "Name is required"
+      newErrors.name = "Le prénom est requis"
     }
 
-    if (!phone.trim()) {
-      newErrors.phone = "Phone number is required"
-    } else if (!/^[\d\s+()-]+$/.test(phone)) {
-      newErrors.phone = "Invalid phone number"
+    if (!email.trim()) {
+      newErrors.email = "L'email est requis"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Email invalide"
     }
 
     setErrors(newErrors)
@@ -52,11 +52,11 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    onClaim(name, phone)
+    onClaim(name, email)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-[#fffcf5] flex items-center justify-center px-4 py-8">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -69,22 +69,22 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Congratulations!</h1>
-          <p className="text-gray-600">You won an amazing prize!</p>
+          <h1 className="text-4xl font-bold text-[#e63946] mb-2 font-black uppercase">Félicitations !</h1>
+          <p className="text-black font-medium">Tu as gagné un cadeau !</p>
         </motion.div>
 
         {/* Prize Card with Glow */}
         <motion.div
-          className="relative mb-8 p-8 bg-white rounded-2xl shadow-2xl overflow-hidden"
+          className="relative mb-8 p-8 bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-black"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          {/* Golden Glow Background */}
+          {/* Brand Glow Background */}
           <div
             className="absolute inset-0 opacity-20 blur-3xl"
             style={{
-              background: `radial-gradient(circle at center, #FCBF49, transparent)`,
+              background: `radial-gradient(circle at center, #f9c80e, transparent)`,
             }}
           />
 
@@ -99,14 +99,14 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
             </motion.div>
 
             {/* Prize Name */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{prize.name}</h2>
+            <h2 className="text-2xl font-bold text-black mb-2 font-black uppercase">{prize.name}</h2>
 
             {/* Prize Badge */}
             <div
               className="inline-block px-4 py-2 rounded-full text-white font-semibold"
               style={{ backgroundColor: prize.color }}
             >
-              You Won!
+              Gagné !
             </div>
           </div>
         </motion.div>
@@ -121,8 +121,8 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
         >
           {/* Name Input */}
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-              Full Name
+            <label htmlFor="name" className="block text-sm font-semibold text-black mb-2">
+              Prénom
             </label>
             <input
               type="text"
@@ -132,14 +132,14 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
                 setName(e.target.value)
                 if (errors.name) setErrors({ ...errors, name: undefined })
               }}
-              placeholder="Enter your name"
+              placeholder="Ton prénom"
               className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
-                errors.name ? "border-red-500 bg-red-50" : "border-gray-300 focus:border-red-600"
-              } focus:outline-none bg-white`}
+                errors.name ? "border-[#e63946] bg-red-50" : "border-black focus:border-[#e63946]"
+              } focus:outline-none bg-white text-black`}
             />
             {errors.name && (
               <motion.p
-                className="text-red-600 text-sm mt-1 flex items-center gap-1"
+                className="text-[#e63946] text-sm mt-1 flex items-center gap-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
@@ -149,32 +149,32 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
             )}
           </div>
 
-          {/* Phone Input */}
+          {/* Email Input */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-              Phone Number
+            <label htmlFor="email" className="block text-sm font-semibold text-black mb-2">
+              Adresse Email
             </label>
             <input
-              type="tel"
-              id="phone"
-              value={phone}
+              type="email"
+              id="email"
+              value={email}
               onChange={(e) => {
-                setPhone(e.target.value)
-                if (errors.phone) setErrors({ ...errors, phone: undefined })
+                setEmail(e.target.value)
+                if (errors.email) setErrors({ ...errors, email: undefined })
               }}
-              placeholder="+216 XX XXX XXX"
+              placeholder="ton.email@exemple.com"
               className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
-                errors.phone ? "border-red-500 bg-red-50" : "border-gray-300 focus:border-red-600"
-              } focus:outline-none bg-white`}
+                errors.email ? "border-[#e63946] bg-red-50" : "border-black focus:border-[#e63946]"
+              } focus:outline-none bg-white text-black`}
             />
-            {errors.phone && (
+            {errors.email && (
               <motion.p
-                className="text-red-600 text-sm mt-1 flex items-center gap-1"
+                className="text-[#e63946] text-sm mt-1 flex items-center gap-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
                 <AlertCircle className="w-4 h-4" />
-                {errors.phone}
+                {errors.email}
               </motion.p>
             )}
           </div>
@@ -184,9 +184,9 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 disabled:opacity-50 text-white font-bold text-lg py-6 rounded-xl shadow-lg transition-all"
+              className="w-full bg-[#e63946] hover:bg-[#d62839] disabled:opacity-50 text-white font-bold text-lg py-6 rounded-xl shadow-lg transition-all uppercase"
             >
-              {isSubmitting ? "Saving..." : "CLAIM PRIZES!"}
+              {isSubmitting ? "Enregistrement..." : "RÉCUPÉRER MON CADEAU !"}
             </Button>
           </motion.div>
 
@@ -194,7 +194,7 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
           <button
             type="button"
             onClick={onBack}
-            className="w-full text-gray-600 hover:text-gray-900 font-semibold py-2 transition-colors"
+            className="w-full text-black hover:text-[#e63946] font-semibold py-2 transition-colors hidden"
           >
             Back to Home
           </button>

@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { LandingPage } from "./landing-page"
-import { QRScanner } from "./qr-scanner"
 import { PrizeWheel } from "./prize-wheel"
 import { PrizeResults } from "./prize-results"
 import { SuccessConfirmation } from "./success-confirmation"
@@ -17,7 +16,6 @@ interface Prize {
 
 type AppState =
   | "landing"
-  | "scanner"
   | "verifying"
   | "wheel"
   | "results"
@@ -34,47 +32,50 @@ export function PizzaRouletteApp() {
   const [spinsRemaining, setSpinsRemaining] = useState(SPINS_PER_TICKET)
   const [wonPrizes, setWonPrizes] = useState<Prize[]>([])
   const [currentPrize, setCurrentPrize] = useState<Prize | null>(null)
-  const [userInfo, setUserInfo] = useState({ name: "", phone: "" })
-  const [errorType, setErrorType] = useState<"used" | "invalid" | "no-spins" | null>(null)
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" })
+  const [errorType, setErrorType] = useState<"used" | "invalid" | "no-spins" | "daily-limit" | null>(null)
   const [spinIds, setSpinIds] = useState<string[]>([])
 
-  const handleScanSuccess = async (code: string) => {
+  const handleStartScan = async () => {
+    // Check daily limit
+    const lastSpinDate = localStorage.getItem("lastSpinDate")
+    const today = new Date().toDateString()
+    
+    if (lastSpinDate === today) {
+      setErrorType("daily-limit")
+      setCurrentState("error-used")
+      return
+    }
+
     setCurrentState("verifying")
+
     try {
-      let payload: any
-      try {
-        payload = JSON.parse(code)
-      } catch {
-        // Fallback: treat code as ticket id with zero spins
-        setErrorType("invalid")
-        setCurrentState("error-invalid")
-        return
-      }
-      const res = await fetch("/api/verify-ticket", {
+      const res = await fetch("/api/public-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
       })
-      const data = await res.json()
+      
       if (!res.ok) {
-        if (res.status === 409) {
-          setErrorType("used")
+        if (res.status === 429) {
+          setErrorType("daily-limit") // Or rate-limit
           setCurrentState("error-used")
-        } else if (res.status === 400) {
-          setErrorType("invalid")
-          setCurrentState("error-invalid")
         } else {
-          // Fallback for 500s or other unexpected errors
-          console.error("Verification failed:", res.status, data)
+          // Generic error
           setErrorType("invalid")
           setCurrentState("error-invalid")
         }
         return
       }
+
+      const data = await res.json()
       setTicketId(data.ticket_id)
-      setSpinsRemaining((data.spins?.simple || 0) + (data.spins?.premium || 0))
+      setSpinsRemaining(1)
       setCurrentState("wheel")
-    } catch {
+      
+      // Set cookie/local storage
+      localStorage.setItem("lastSpinDate", today)
+
+    } catch (error) {
+      console.error("Error starting session:", error)
       setErrorType("invalid")
       setCurrentState("error-invalid")
     }
@@ -108,13 +109,13 @@ export function PizzaRouletteApp() {
     setCurrentState("results")
   }
 
-  const handleClaimPrize = (name: string, phone: string) => {
-    setUserInfo({ name, phone })
+  const handleClaimPrize = (name: string, email: string) => {
+    setUserInfo({ name, email })
     ;(async () => {
       const res = await fetch("/api/claim-prizes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ticket_id: ticketId, name, phone, spin_ids: spinIds }),
+        body: JSON.stringify({ ticket_id: ticketId, name, email, spin_ids: spinIds }),
       })
       if (res.ok) setCurrentState("success")
     })()
@@ -126,13 +127,13 @@ export function PizzaRouletteApp() {
     setSpinsRemaining(SPINS_PER_TICKET)
     setWonPrizes([])
     setCurrentPrize(null)
-    setUserInfo({ name: "", phone: "" })
+    setUserInfo({ name: "", email: "" })
     setErrorType(null)
     setSpinIds([])
   }
 
   const handleRetryScanner = () => {
-    setCurrentState("scanner")
+    setCurrentState("landing")
     setErrorType(null)
   }
 
@@ -142,15 +143,13 @@ export function PizzaRouletteApp() {
 
   return (
     <>
-      {currentState === "landing" && <LandingPage onStartScan={() => setCurrentState("scanner")} />}
-
-      {currentState === "scanner" && <QRScanner onScanSuccess={handleScanSuccess} onBack={handleBackToLanding} />}
+      {currentState === "landing" && <LandingPage onStartScan={handleStartScan} />}
       
       {currentState === "verifying" && (
-        <div className="fixed inset-0 bg-black flex items-center justify-center text-white">
+        <div className="fixed inset-0 bg-[#fffcf5] flex items-center justify-center text-black">
           <div className="text-center">
-             <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-500 mx-auto mb-4"></div>
-             <p className="text-xl">Verifying Ticket...</p>
+             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#e63946] mx-auto mb-4"></div>
+             <p className="text-xl font-bold">Vérification en cours...</p>
           </div>
         </div>
       )}
@@ -177,7 +176,7 @@ export function PizzaRouletteApp() {
       {currentState === "success" && currentPrize && (
         <SuccessConfirmation
           userName={userInfo.name}
-          userPhone={userInfo.phone}
+          userEmail={userInfo.email}
           prize={currentPrize}
           onComplete={handleBackToLanding}
         />

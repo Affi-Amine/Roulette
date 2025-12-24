@@ -36,26 +36,30 @@ export default function StaffPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search name or phone"
-          className="border rounded p-2 flex-1"
+          placeholder="Rechercher par Nom ou Email"
+          className="border-2 border-black rounded-lg p-2 flex-1 font-sans"
         />
-        <button onClick={search} className="px-4 py-2 bg-black text-white rounded">Search</button>
+        <button onClick={search} className="px-4 py-2 bg-accent text-black font-bold border-2 border-black rounded-lg shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[1px_1px_0_rgba(0,0,0,1)] uppercase">Rechercher</button>
       </div>
-      {loading ? <p>Loading...</p> : null}
+      {loading ? <p className="font-bold animate-pulse">Chargement...</p> : null}
       <div className="space-y-4">
         {users.map((u) => (
-          <div key={u.id} className="border rounded p-4">
-            <div className="font-semibold">{u.name} — {u.phone}</div>
+          <div key={u.id} className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0_rgba(0,0,0,0.1)]">
+            <div className="font-black text-lg uppercase mb-2">{u.name}</div>
+            <div className="text-sm text-gray-600 mb-4 font-bold">{u.email}</div>
             <div className="mt-2 space-y-2">
               {(u.user_prizes || []).map((p: any) => (
-                <div key={p.id} className="flex items-center justify-between">
+                <div key={p.id} className="flex items-center justify-between bg-muted p-2 rounded-lg border border-black/10">
                   <div>
-                    <span className="mr-2">{p.prize?.emoji} {p.prize?.name}</span>
-                    <span className="text-sm text-gray-600">{p.status}</span>
+                    <span className="mr-2 text-xl">{p.prize?.emoji}</span>
+                    <span className="font-bold">{p.prize?.name}</span>
+                    <div className="text-xs font-bold uppercase mt-1">
+                      Status: <span className={p.status === "validated" ? "text-green-600" : "text-orange-500"}>{p.status === "validated" ? "Validé" : "En attente"}</span>
+                    </div>
                   </div>
                   {p.status !== "validated" && (
-                    <button onClick={() => validatePrize(p.id)} className="px-3 py-1 border rounded">
-                      Validate
+                    <button onClick={() => validatePrize(p.id)} className="px-3 py-1 bg-green-500 text-white font-bold rounded border-2 border-green-700 shadow-sm hover:bg-green-600 uppercase text-xs">
+                      Valider
                     </button>
                   )}
                 </div>

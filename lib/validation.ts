@@ -15,7 +15,7 @@ export const SpinSchema = z.object({
 export const ClaimPrizesSchema = z.object({
   ticket_id: z.string().min(1),
   name: z.string().min(1).max(100),
-  phone: z.string().min(5).max(30),
+  email: z.string().email(),
   spin_ids: z.array(z.string().uuid()).min(1),
 })
 

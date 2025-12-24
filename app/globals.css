@@ -4,40 +4,37 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Pizza Roulette color palette */
-  --background: #f9f9f9;
+  /* Pizza Roulette Ma Che! Palette */
+  --background: #fffcf5; /* Off-white beige like the dough */
   --foreground: #1a1a1a;
+  
+  /* Brand Red */
+  --primary: #e63946; 
+  --primary-foreground: #ffffff;
+  
+  /* Brand Teal/Green */
+  --secondary: #2a9d8f;
+  --secondary-foreground: #ffffff;
+  
+  /* Brand Yellow/Gold */
+  --accent: #f9c80e;
+  --accent-foreground: #1a1a1a;
+  
+  /* Brand Pink */
+  --destructive: #f4978e; 
+  --destructive-foreground: #1a1a1a;
+
   --card: #ffffff;
   --card-foreground: #1a1a1a;
   --popover: #ffffff;
   --popover-foreground: #1a1a1a;
-  --primary: #e63946;
-  --primary-foreground: #ffffff;
-  --secondary: #f77f00;
-  --secondary-foreground: #ffffff;
   --muted: #f3f4f6;
   --muted-foreground: #6b7280;
-  --accent: #fcbf49;
-  --accent-foreground: #1a1a1a;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
   --border: #e5e7eb;
   --input: #ffffff;
   --ring: #e63946;
-  --chart-1: #e63946;
-  --chart-2: #f77f00;
-  --chart-3: #fcbf49;
-  --chart-4: #06a77d;
-  --chart-5: #9d0208;
-  --radius: 0.625rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: #e63946;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f77f00;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #e63946;
+  
+  --radius: 0.75rem;
 }
 
 .dark {

@@ -7,17 +7,20 @@ export async function POST(req: NextRequest) {
   if (!parse.success) {
     return NextResponse.json({ error_code: "bad_request", message: "Invalid payload", details: parse.error.flatten() }, { status: 400 })
   }
-  const { ticket_id, name, phone, spin_ids } = parse.data
+  const { ticket_id, name, email, spin_ids } = parse.data
 
   const supabase = supabaseServer()
 
-  let { data: user } = await supabase.from("users").select("*").eq("phone", phone).maybeSingle()
+  // Check if user exists by email
+  let { data: user } = await supabase.from("users").select("*").eq("email", email).maybeSingle()
 
   if (!user) {
-    const { data: newUser } = await supabase.from("users").insert({ name, phone }).select().maybeSingle()
+    // Create new user with email
+    const { data: newUser } = await supabase.from("users").insert({ name, email }).select().maybeSingle()
     user = newUser
   }
 
+  // Link user to ticket
   await supabase.from("tickets").update({ user_id: (user as any).id }).eq("ticket_id", ticket_id)
 
   const { data: spins } = await supabase.from("spins").select("id, prize_id").in("id", spin_ids)
