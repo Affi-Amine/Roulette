@@ -122,28 +122,28 @@ export function ErrorNoSpins({ onBackHome }: ErrorNoSpinsProps) {
         <div className="text-6xl mb-6">😊</div>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Better Luck Next Time!</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Plus de chance la prochaine fois !</h1>
 
         {/* Message */}
         <p className="text-gray-600 mb-8 text-lg">
-          You&#39;ve used all your spins for this ticket. Don&#39;t worry, you can try again with another pizza receipt!
+          Vous avez utilisé tous vos lancers pour ce ticket. Ne vous inquiétez pas, vous pouvez réessayer avec un autre ticket de caisse !
         </p>
 
         {/* Tips */}
         <div className="bg-white rounded-xl p-6 mb-8 space-y-3 text-left">
-          <p className="font-semibold text-gray-900">Next Steps:</p>
+          <p className="font-semibold text-gray-900">Prochaines étapes :</p>
           <ul className="space-y-2 text-gray-700">
             <li className="flex items-center gap-2">
               <span className="text-orange-600">•</span>
-              Buy more delicious pizzas
+              Achetez plus de délicieuses pizzas
             </li>
             <li className="flex items-center gap-2">
               <span className="text-orange-600">•</span>
-              Get more ticket QR codes
+              Obtenez plus de tickets QR
             </li>
             <li className="flex items-center gap-2">
               <span className="text-orange-600">•</span>
-              Win even more amazing prizes
+              Gagnez encore plus de cadeaux incroyables
             </li>
           </ul>
         </div>
@@ -154,7 +154,7 @@ export function ErrorNoSpins({ onBackHome }: ErrorNoSpinsProps) {
             onClick={onBackHome}
             className="w-full bg-gradient-to-r from-orange-600 to-red-500 hover:from-orange-700 hover:to-red-600 text-white font-bold py-6 rounded-xl shadow-lg"
           >
-            BACK HOME
+            RETOUR À L'ACCUEIL
           </Button>
         </motion.div>
       </motion.div>

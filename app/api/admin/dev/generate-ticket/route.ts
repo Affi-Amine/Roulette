@@ -4,7 +4,7 @@ import { createHmac } from "crypto"
 export async function POST(req: NextRequest) {
   const { ticket_id, nb_pizzas_classiques, nb_pizzas_premium } = await req.json()
   if (!process.env.HMAC_SECRET) {
-    return NextResponse.json({ error: "Missing HMAC secret" }, { status: 500 })
+    return NextResponse.json({ error: "Secret HMAC manquant" }, { status: 500 })
   }
   const message = `${ticket_id}|${nb_pizzas_classiques}|${nb_pizzas_premium}`
   const sig = createHmac("sha256", process.env.HMAC_SECRET!).update(message).digest("hex")

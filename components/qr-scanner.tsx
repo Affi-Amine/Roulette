@@ -113,7 +113,7 @@ export function QRScanner({ onScanSuccess, onBack }: QRScannerProps) {
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h2 className="text-white font-semibold">Scan QR Code</h2>
+        <h2 className="text-white font-semibold">Scanner le QR Code</h2>
         <div className="w-10" />
       </div>
 
@@ -162,7 +162,7 @@ export function QRScanner({ onScanSuccess, onBack }: QRScannerProps) {
 
             {/* Instructions */}
             <div className="absolute bottom-20 left-0 right-0 text-center text-white px-4">
-              <p className="text-lg font-semibold drop-shadow-lg">Position QR code in the frame</p>
+              <p className="text-lg font-semibold drop-shadow-lg">Placez le QR Code dans le cadre</p>
             </div>
           </>
         )}
@@ -170,8 +170,8 @@ export function QRScanner({ onScanSuccess, onBack }: QRScannerProps) {
         {hasError && (
           <motion.div className="text-center text-white px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <AlertCircle className="w-16 h-16 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">Camera Access Required</h3>
-            <p className="text-gray-300">Please allow camera access to scan QR codes</p>
+            <h3 className="text-xl font-bold mb-2">Accès caméra requis</h3>
+            <p className="text-gray-300">Veuillez autoriser l'accès à la caméra pour scanner</p>
           </motion.div>
         )}
       </div>
@@ -188,13 +188,13 @@ export function QRScanner({ onScanSuccess, onBack }: QRScannerProps) {
             onClick={() => setShowManualInput(true)}
             className="w-full px-4 py-3 border-2 border-white/50 hover:border-white text-white font-semibold rounded-lg transition-colors"
           >
-            ENTER CODE MANUALLY
+            SAISIR LE CODE MANUELLEMENT
           </button>
         ) : (
           <form onSubmit={handleManualSubmit} className="space-y-3">
             <input
               type="text"
-              placeholder="Enter QR code..."
+              placeholder="Entrez le code..."
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
               className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:border-white/70"
@@ -209,17 +209,18 @@ export function QRScanner({ onScanSuccess, onBack }: QRScannerProps) {
                 }}
                 className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors"
               >
-                CANCEL
+                ANNULER
               </button>
               <button
                 type="submit"
                 className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
               >
-                SUBMIT
+                VALIDER
               </button>
             </div>
           </form>
         )}
+
       </motion.div>
     </div>
   )

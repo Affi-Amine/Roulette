@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className={`${_geist.className} ${_geistMono.className} font-sans antialiased`}>
         {children}
         <Analytics />

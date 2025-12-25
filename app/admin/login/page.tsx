@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
     
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     if (!url) {
-      setError("Configuration Error: NEXT_PUBLIC_SUPABASE_URL is missing")
+      setError("Erreur de configuration: NEXT_PUBLIC_SUPABASE_URL est manquant")
       return
     }
 
@@ -24,12 +24,16 @@ export default function AdminLoginPage() {
       const supabaseClient = getSupabaseClient()
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password })
       if (error) {
-        setError(error.message)
+        if (error.message === "Invalid login credentials") {
+          setError("Identifiants incorrects")
+        } else {
+          setError("Erreur de connexion : " + error.message)
+        }
         return
       }
       window.location.href = "/admin"
     } catch (err: any) {
-      setError("Unexpected error occurred")
+      setError("Une erreur inattendue est survenue")
       setDebugInfo(err.message || JSON.stringify(err))
     }
   }
@@ -37,7 +41,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
       <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4">
-        <h1 className="text-2xl font-bold">Admin Login</h1>
+        <h1 className="text-2xl font-bold">Connexion Admin</h1>
         {error && <div className="text-red-600 text-sm bg-red-50 p-2 rounded">
           <p className="font-bold">{error}</p>
           {debugInfo && <p className="mt-1 text-xs font-mono">{debugInfo}</p>}
@@ -53,11 +57,11 @@ export default function AdminLoginPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Mot de passe"
           className="w-full border rounded p-2"
         />
         <button type="submit" className="w-full bg-black text-white rounded p-2">
-          Login
+          Se connecter
         </button>
       </form>
     </div>

@@ -22,24 +22,24 @@ export default function AdminQRPage() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data?.error || "Failed to generate ticket")
+        setError(data?.error || "Échec de la génération du ticket")
         return
       }
       setPayload(data.payload)
       const url = `/api/admin/dev/qr?ticket_id=${encodeURIComponent(ticketId)}&nb_pizzas_classiques=${classiques}&nb_pizzas_premium=${premium}`
       setQrUrl(url)
     } catch (e: any) {
-      setError("Network error")
+      setError("Erreur réseau")
     }
   }
 
   return (
     <div className="min-h-screen p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Generate QR Codes</h1>
+      <h1 className="text-2xl font-bold">Générer des QR Codes</h1>
       {error && <p className="text-red-600">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm">Ticket ID</label>
+          <label className="block text-sm">ID Ticket</label>
           <input value={ticketId} onChange={(e) => setTicketId(e.target.value)} className="w-full border rounded p-2" />
         </div>
         <div className="space-y-2">
@@ -51,21 +51,21 @@ export default function AdminQRPage() {
           <input type="number" value={premium} onChange={(e) => setPremium(Number(e.target.value))} className="w-full border rounded p-2" />
         </div>
       </div>
-      <button onClick={generate} className="px-4 py-2 bg-black text-white rounded">Generate</button>
+      <button onClick={generate} className="px-4 py-2 bg-black text-white rounded">Générer</button>
 
       {payload && (
         <div className="border rounded p-4">
-          <div className="font-semibold mb-2">Payload</div>
+          <div className="font-semibold mb-2">Données</div>
           <pre className="text-sm bg-gray-100 p-3 rounded overflow-x-auto">{JSON.stringify(payload, null, 2)}</pre>
         </div>
       )}
 
       {qrUrl && (
         <div className="space-y-2">
-          <div className="font-semibold">QR Image</div>
+          <div className="font-semibold">Image QR</div>
           <img src={qrUrl} alt="QR Code" className="w-60 h-60 border rounded" />
           <div className="text-sm">
-            Image URL: <a href={qrUrl} target="_blank" rel="noreferrer" className="underline">{qrUrl}</a>
+            URL Image: <a href={qrUrl} target="_blank" rel="noreferrer" className="underline">{qrUrl}</a>
           </div>
         </div>
       )}

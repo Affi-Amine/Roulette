@@ -161,7 +161,7 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
         </Button>
       </motion.div>
 
-      {spinsRemaining === 0 && <p className="text-orange-600 font-semibold mt-4">No spins remaining</p>}
+      {spinsRemaining === 0 && <p className="text-orange-600 font-semibold mt-4">Plus de lancers disponibles</p>}
     </div>
   )
 }

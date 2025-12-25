@@ -196,13 +196,13 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
             onClick={onBack}
             className="w-full text-black hover:text-[#e63946] font-semibold py-2 transition-colors hidden"
           >
-            Back to Home
+            Retour à l'accueil
           </button>
         </motion.form>
 
         {/* Trust Note */}
         <div className="text-center mt-6 text-sm text-gray-500">
-          <p>Your information is secure and will only be used to process your prize.</p>
+          <p>Vos informations sont sécurisées et ne seront utilisées que pour traiter votre gain.</p>
         </div>
       </motion.div>
     </div>

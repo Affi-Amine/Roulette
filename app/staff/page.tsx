@@ -59,7 +59,7 @@ export default function StaffPage() {
         
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-black text-[#e63946] uppercase tracking-tight">Staff Dashboard 🍕</h1>
+          <h1 className="text-4xl font-black text-[#e63946] uppercase tracking-tight">Tableau de Bord du Personnel 🍕</h1>
           <p className="text-gray-600 font-medium">Recherche client & Validation des gains</p>
         </div>
 

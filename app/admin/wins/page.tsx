@@ -69,7 +69,7 @@ export default function AdminWinsPage() {
           <div>
             <Link href="/admin" className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-2 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour au Dashboard
+              Retour au Tableau de Bord
             </Link>
             <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Historique des Gains</h1>
             <p className="text-gray-500 font-medium">Liste de tous les gains attribués et leur statut.</p>
@@ -132,7 +132,7 @@ export default function AdminWinsPage() {
                           <div className="hidden md:block w-1 h-1 rounded-full bg-gray-300"></div>
                           <div className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            <span>{new Date(win.wonAt).toLocaleDateString()} à {new Date(win.wonAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            <span>{new Date(win.wonAt).toLocaleDateString('fr-FR')} à {new Date(win.wonAt).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</span>
                           </div>
                         </div>
                       </div>

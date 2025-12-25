@@ -32,9 +32,9 @@ export default function AdminSpinsPage() {
           <div>
             <Link href="/admin" className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-2 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour au Dashboard
+              Retour au Tableau de Bord
             </Link>
-            <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Historique des Spins</h1>
+            <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Historique des Lancers</h1>
             <p className="text-gray-500 font-medium">Journal des 100 derniers tirages effectués.</p>
           </div>
           <button 
@@ -88,11 +88,11 @@ export default function AdminSpinsPage() {
                           ? 'bg-purple-100 text-purple-700 border border-purple-200' 
                           : 'bg-gray-100 text-gray-600 border border-gray-200'
                       }`}>
-                        {spin.spin_type}
+                        {spin.spin_type === 'simple' ? 'Classique' : spin.spin_type === 'premium' ? 'Premium' : spin.spin_type}
                       </div>
                     </div>
                     <div className="text-sm text-gray-400 font-medium whitespace-nowrap">
-                      {new Date(spin.created_at).toLocaleString()}
+                      {new Date(spin.created_at).toLocaleString('fr-FR')}
                     </div>
                   </div>
 

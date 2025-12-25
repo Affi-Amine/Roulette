@@ -12,13 +12,13 @@ export default function AdminDashboardPage() {
       try {
         const res = await fetch("/api/admin/stats")
         if (!res.ok) {
-          setError("Failed to load stats")
+          setError("Échec du chargement des statistiques")
           return
         }
         const data = await res.json()
         setStats(data)
       } catch (e) {
-        setError("Network error")
+        setError("Erreur réseau")
       }
     }
     load()
@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
         
         <header className="flex items-center justify-between pb-6 border-b">
           <div>
-            <h1 className="text-3xl font-black text-gray-900 uppercase">Admin Dashboard</h1>
+            <h1 className="text-3xl font-black text-gray-900 uppercase">Tableau de Bord</h1>
             <p className="text-gray-500 font-medium">Vue d'ensemble et gestion</p>
           </div>
           <div className="flex gap-4">
