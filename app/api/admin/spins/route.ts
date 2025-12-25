@@ -5,9 +5,25 @@ export async function GET() {
   const supabase = supabaseServer()
   const { data } = await supabase
     .from("spins")
-    .select("created_at, spin_type, ticket_id, prize:prizes(name,emoji,color)")
+    .select(`
+      id,
+      created_at,
+      spin_type,
+      ticket_id,
+      prize:prizes (
+        name,
+        emoji,
+        color
+      ),
+      ticket:tickets (
+        user:users (
+          name,
+          email
+        )
+      )
+    `)
     .order("created_at", { ascending: false })
     .limit(100)
+  
   return NextResponse.json({ spins: data || [] })
 }
-
