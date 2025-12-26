@@ -139,7 +139,7 @@ export function ErrorNoSpins({ onBackHome }: ErrorNoSpinsProps) {
             </li>
             <li className="flex items-center gap-2">
               <span className="text-[#FF4500] text-xl">•</span>
-              Scanne tes tickets 🎟️
+              Rends-toi en boutique 🏃
             </li>
             <li className="flex items-center gap-2">
               <span className="text-[#FF4500] text-xl">•</span>

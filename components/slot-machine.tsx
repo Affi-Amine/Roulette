@@ -82,9 +82,6 @@ function Reel({
         {/* Shadow Overlay for Depth */}
         <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_10px_20px_rgba(0,0,0,0.2),inset_0_-10px_20px_rgba(0,0,0,0.2)]"></div>
         
-        {/* Highlight line */}
-        <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-red-500/30 z-20 pointer-events-none -translate-y-1/2"></div>
-
         <motion.div
             animate={controls}
             style={{ filter: `blur(${blurAmount}px)` }}
