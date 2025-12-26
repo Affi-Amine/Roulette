@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, useAnimation } from "framer-motion"
 import { Button } from "./ui/button"
 import { Prize } from "./prize-wheel"
