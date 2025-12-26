@@ -88,15 +88,15 @@ export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: 
           </div>
 
           {/* Name */}
-          <div className="flex items-center justify-between pb-2 border-b-2 border-black border-dashed">
-            <span className="text-black font-bold uppercase text-sm">Prénom:</span>
-            <span className="font-bold text-black uppercase">{userName}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-1 sm:gap-4 pb-2 border-b-2 border-black border-dashed">
+            <span className="text-black font-bold uppercase text-sm min-w-[60px]">Prénom:</span>
+            <span className="font-bold text-black uppercase text-left truncate w-full sm:w-auto">{userName}</span>
           </div>
 
           {/* Email */}
-          <div className="flex items-center justify-between">
-            <span className="text-black font-bold uppercase text-sm">Email:</span>
-            <span className="font-bold text-black uppercase">{userEmail}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-1 sm:gap-4">
+            <span className="text-black font-bold uppercase text-sm min-w-[60px]">Email:</span>
+            <span className="font-bold text-black uppercase text-left break-all">{userEmail}</span>
           </div>
         </motion.div>
 
@@ -107,8 +107,8 @@ export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: 
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-sm font-black uppercase">
-            ⚠️ Présente cet écran au comptoir pour récupérer ton cadeau.
+          <p className="text-sm font-black uppercase leading-tight">
+            ⚠️ Présenter votre ticket de caisse au comptoir pour récupérer votre gain!
           </p>
         </motion.div>
 
