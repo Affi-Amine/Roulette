@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Pizza Roulette - Win Amazing Prizes!",
-  description: "Scan your pizza receipt QR code and spin to win incredible rewards and prizes!",
+  title: "Pizza Roulette - Gagnez des Prix Incroyables !",
+  description: "Scannez le QR code de votre ticket de caisse et tournez la roue pour gagner des récompenses incroyables !",
   generator: "v0.app",
   icons: {
     icon: [

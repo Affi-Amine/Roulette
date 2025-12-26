@@ -4,72 +4,66 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Pizza Roulette Ma Che! Palette */
-  --background: #fffcf5; /* Off-white beige like the dough */
-  --foreground: #1a1a1a;
+  /* MA CHE! Brand Palette */
+  --background: #FFFDD0; /* Cream/Off-white */
+  --foreground: #000000; /* Black for contrast */
   
-  /* Brand Red */
-  --primary: #e63946; 
+  /* Vibrant Hot Pink/Magenta (Dominant) */
+  --primary: #FF007F; 
   --primary-foreground: #ffffff;
   
-  /* Brand Teal/Green */
-  --secondary: #2a9d8f;
+  /* Black (Secondary) */
+  --secondary: #000000;
   --secondary-foreground: #ffffff;
   
-  /* Brand Yellow/Gold */
-  --accent: #f9c80e;
-  --accent-foreground: #1a1a1a;
+  /* Bright Red/Orange (Accent/Spicy) */
+  --accent: #FF4500;
+  --accent-foreground: #ffffff;
   
-  /* Brand Pink */
-  --destructive: #f4978e; 
-  --destructive-foreground: #1a1a1a;
+  /* Alert/Destructive */
+  --destructive: #EF4444; 
+  --destructive-foreground: #ffffff;
 
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #000000;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
+  --popover-foreground: #000000;
   --muted: #f3f4f6;
   --muted-foreground: #6b7280;
-  --border: #e5e7eb;
+  --border: #000000; /* Bold borders */
   --input: #ffffff;
-  --ring: #e63946;
+  --ring: #FF007F;
   
-  --radius: 0.75rem;
+  --radius: 0rem; /* Sharp edges for street style */
 }
 
 .dark {
-  --background: #0f0f0f;
-  --foreground: #f9f9f9;
-  --card: #1a1a1a;
-  --card-foreground: #f9f9f9;
-  --popover: #1a1a1a;
-  --popover-foreground: #f9f9f9;
-  --primary: #e63946;
+  /* Keep dark mode but align with brand if needed, though brand is "Cream background" */
+  /* For now, let's force the light mode aesthetic as the brand identity */
+  --background: #1a1a1a;
+  --foreground: #FFFDD0;
+  --card: #2d2d2d;
+  --card-foreground: #FFFDD0;
+  --popover: #2d2d2d;
+  --popover-foreground: #FFFDD0;
+  --primary: #FF007F;
   --primary-foreground: #ffffff;
-  --secondary: #f77f00;
-  --secondary-foreground: #ffffff;
+  --secondary: #ffffff;
+  --secondary-foreground: #000000;
   --muted: #2d2d2d;
   --muted-foreground: #a0a0a0;
-  --accent: #fcbf49;
-  --accent-foreground: #1a1a1a;
+  --accent: #FF4500;
+  --accent-foreground: #ffffff;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #2d2d2d;
+  --border: #FFFDD0;
   --input: #1a1a1a;
-  --ring: #e63946;
-  --chart-1: #e63946;
-  --chart-2: #f77f00;
-  --chart-3: #fcbf49;
+  --ring: #FF007F;
+  --chart-1: #FF007F;
+  --chart-2: #FF4500;
+  --chart-3: #FFFDD0;
   --chart-4: #34d399;
   --chart-5: #9d0208;
-  --sidebar: #1a1a1a;
-  --sidebar-foreground: #f9f9f9;
-  --sidebar-primary: #e63946;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f77f00;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #2d2d2d;
-  --sidebar-ring: #e63946;
 }
 
 @theme inline {

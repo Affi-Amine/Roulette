@@ -4,70 +4,144 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "./ui/button"
 
-interface Prize {
+export interface Prize {
   id: string
   name: string
   emoji: string
+  image_url?: string | null
   color: string
 }
 
 interface PrizeWheelProps {
+  prizes: Prize[]
+  ticketId: string
   onSpinComplete: (prize: Prize) => void
   spinsRemaining: number
 }
 
-const PRIZES: Prize[] = [
-  { id: "1", name: "Pizza", emoji: "🍕", color: "#e63946" },
-  { id: "2", name: "Coca", emoji: "🥤", color: "#f9c80e" },
-  { id: "3", name: "Dessert", emoji: "🍰", color: "#2a9d8f" },
-  { id: "4", name: "Café", emoji: "☕", color: "#e63946" },
-  { id: "5", name: "Pizza", emoji: "🍕", color: "#f9c80e" },
-  { id: "6", name: "Coca", emoji: "🥤", color: "#2a9d8f" },
-  { id: "7", name: "Dessert", emoji: "🍰", color: "#e63946" },
-  { id: "8", name: "Café", emoji: "☕", color: "#f9c80e" },
-]
-
-export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) {
+export function PrizeWheel({ prizes, ticketId, onSpinComplete, spinsRemaining }: PrizeWheelProps) {
   const [isSpinning, setIsSpinning] = useState(false)
   const [rotation, setRotation] = useState(0)
 
-  const handleSpin = () => {
+  const handleSpin = async () => {
     if (isSpinning || spinsRemaining <= 0) return
 
     setIsSpinning(true)
 
-    // Calculate random spin: 5 full rotations + random angle
-    const randomIndex = Math.floor(Math.random() * PRIZES.length)
-    const segmentAngle = 360 / PRIZES.length
-    const targetAngle = 360 * 5 + randomIndex * segmentAngle + segmentAngle / 2
+    try {
+      // 1. Call API to get the result
+      const res = await fetch("/api/spin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticket_id: ticketId, spin_type: "simple" }),
+      })
 
-    setRotation(targetAngle)
+      if (!res.ok) {
+        throw new Error("Spin failed")
+      }
 
-    // Complete spin after animation
-    setTimeout(() => {
+      const data = await res.json()
+      const winningPrizeId = data.prize_id
+
+      // 2. Find the winning segment index
+      const winningIndex = prizes.findIndex((p) => p.id === winningPrizeId)
+      if (winningIndex === -1) {
+        throw new Error("Winning prize not found in local list")
+      }
+
+      // 3. Calculate rotation to land on the winner
+      // The wheel spins clockwise.
+      // 0 degrees is usually at 3 o'clock in SVG, but we have a pointer at top (270 deg or -90 deg).
+      // Let's stick to the existing logic but reverse-engineer the target.
+      
+      // Existing logic:
+      // const targetAngle = 360 * 5 + randomIndex * segmentAngle + segmentAngle / 2
+      
+      // If we want index i to be at the top:
+      // The segment i is from (i * segmentAngle) to ((i+1) * segmentAngle).
+      // The center of segment i is (i * segmentAngle + segmentAngle/2).
+      // We want this center to align with the pointer.
+      // If the pointer is at -90deg (top), and we rotate the wheel by R:
+      // (CenterAngle + R) % 360 = -90 (or 270)
+      // R = 270 - CenterAngle
+      
+      // Let's use a simpler approach:
+      // Add extra full rotations (e.g. 5).
+      // Calculate where the winning segment IS currently (at rotation 0).
+      // Rotate back so it hits the pointer.
+      
+      const segmentAngle = 360 / prizes.length
+      const winningSegmentCenter = winningIndex * segmentAngle + segmentAngle / 2
+      
+      // We want winningSegmentCenter to end up at 270 degrees (Top)
+      // Current position + Rotation = 270
+      // Rotation = 270 - winningSegmentCenter
+      // Add 360 * 5 for effect.
+      // Also, to handle negative results, we can add multiples of 360.
+      
+      // Let's try:
+      // targetRotation = 360 * 5 + (270 - winningSegmentCenter)
+      // Make sure it's positive and spins enough.
+      
+      // Actually, the previous code was:
+      // const targetAngle = 360 * 5 + randomIndex * segmentAngle + segmentAngle / 2
+      // This rotates the wheel BY targetAngle.
+      // If we rotate BY (angle of index), that index moves AWAY from 0.
+      // Wait, let's verify the SVG setup.
+      // The pointer is at the TOP.
+      // 0 degrees in SVG is 3 o'clock (Right).
+      // Top is 270 degrees.
+      
+      // Let's just trust a standard formula:
+      // To land on index i:
+      // rotation = (360 * 5) - (i * segmentAngle) - (segmentAngle / 2) + 270
+      // Let's verify:
+      // If i=0 (0 to angle), center is angle/2.
+      // We want angle/2 to be at 270.
+      // Rot = 270 - angle/2. Correct.
+      
+      // We also add random jitter within the segment?
+      // Maybe not for now, center is safer.
+      
+      let targetRotation = 360 * 5 + (270 - winningSegmentCenter)
+      
+      setRotation(targetRotation)
+
+      // 4. Wait for animation
+      setTimeout(() => {
+        setIsSpinning(false)
+        onSpinComplete(data) // Pass the full prize data from API or find it in list
+      }, 4000)
+
+    } catch (error) {
+      console.error("Spin error:", error)
       setIsSpinning(false)
-      onSpinComplete(PRIZES[randomIndex])
-    }, 4000)
+      // Handle error (maybe toast)
+    }
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-primary px-4 py-8 font-sans">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4 py-8 font-sans relative overflow-hidden">
+      {/* Ambient Background Glow - Warm Premium */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-orange-900/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-black/80 to-transparent pointer-events-none" />
+      
       {/* Pattern Overlay */}
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
+      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] pointer-events-none mix-blend-overlay" />
 
       {/* Header */}
       <motion.div className="text-center mb-8 relative z-10" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-black text-white mb-2 uppercase drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">À toi de jouer ! 🎉</h1>
-        <p className="text-white font-bold drop-shadow-md">Tourne la roue pour découvrir ton cadeau</p>
+        <h1 className="text-4xl font-black text-amber-500 mb-2 uppercase drop-shadow-[0_2px_10px_rgba(245,158,11,0.5)] tracking-wide">Roulette Pizza</h1>
+        <p className="text-zinc-400 font-medium tracking-widest uppercase text-sm">Tente ta chance</p>
       </motion.div>
 
       {/* Wheel Container */}
       <div className="relative w-80 h-80 mb-12 flex items-center justify-center z-10">
         {/* Pointer Triangle at Top */}
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[20px] border-r-[20px] border-t-[30px] border-l-transparent border-r-transparent border-t-black drop-shadow-lg" />
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[20px] border-r-[20px] border-t-[30px] border-l-transparent border-r-transparent border-t-amber-500 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]" />
 
         {/* Wheel Border */}
-        <div className="absolute inset-0 rounded-full border-8 border-black shadow-[8px_8px_0_rgba(0,0,0,0.2)] bg-white" />
+        <div className="absolute inset-0 rounded-full border-4 border-zinc-800 shadow-[0_0_60px_rgba(245,158,11,0.2)] bg-zinc-900" />
 
         {/* Wheel */}
         <motion.svg
@@ -81,10 +155,10 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
           style={{ transformOrigin: "center" }}
         >
           {/* Segments */}
-          {PRIZES.map((prize, index) => {
-            const angle = (360 / PRIZES.length) * index
+          {prizes.map((prize, index) => {
+            const angle = (360 / prizes.length) * index
             const startAngle = angle
-            const endAngle = angle + 360 / PRIZES.length
+            const endAngle = angle + 360 / prizes.length
 
             return (
               <g key={prize.id}>
@@ -92,58 +166,45 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
                 <path
                   d={describeArc(140, 140, 120, startAngle, endAngle)}
                   fill={prize.color}
-                  stroke="black"
+                  stroke="#18181b" // zinc-900
                   strokeWidth="2"
                 />
 
-                {/* Prize Text */}
-                <text
-                  x="140"
-                  y="140"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fill="black"
-                  fontSize="14"
-                  fontWeight="bold"
-                  transform={`rotate(${startAngle + 45} 140 140)`}
-                  className="pointer-events-none"
-                >
-                  <tspan x="140" dy="-25">
-                    {prize.emoji}
-                  </tspan>
-                </text>
+                {/* Prize Content */}
+                <g transform={`rotate(${startAngle + (360/prizes.length)/2 + 90} 140 140) translate(0, -85)`}>
+                    <text
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill="white"
+                        fontSize="24"
+                        fontWeight="bold"
+                        transform="rotate(-90)" // Counter-rotate text if needed, or just adjust the group transform
+                    >
+                         {/* We want the text to point outwards or inwards? Usually inwards. 
+                             The previous implementation rotated text. 
+                             Let's stick to emoji/image for now.
+                         */}
+                         {prize.emoji}
+                    </text>
+                </g>
               </g>
             )
           })}
 
           {/* Center Circle */}
-          <circle cx="140" cy="140" r="50" fill="white" stroke="#E63946" strokeWidth="3" />
-          <circle cx="140" cy="140" r="40" fill="#E63946" />
+          <circle cx="140" cy="140" r="40" fill="#18181b" stroke="#d97706" strokeWidth="2" />
           <text
             x="140"
             y="140"
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="white"
-            fontSize="28"
+            fill="#fbbf24"
+            fontSize="24"
             fontWeight="bold"
           >
-            🎰
+            🍕
           </text>
         </motion.svg>
-      </div>
-
-      {/* Spins Counter */}
-      <div className="flex gap-2 mb-8 justify-center">
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`w-4 h-4 rounded-full ${i < spinsRemaining ? "bg-red-600" : "bg-gray-300"}`}
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: i * 0.1 }}
-          />
-        ))}
       </div>
 
       {/* Spin Button */}
@@ -155,13 +216,13 @@ export function PrizeWheel({ onSpinComplete, spinsRemaining }: PrizeWheelProps) 
           size="lg"
           onClick={handleSpin}
           disabled={isSpinning || spinsRemaining <= 0}
-          className="bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xl py-6 px-8 rounded-xl shadow-lg"
+          className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xl py-6 px-12 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.4)] border border-amber-400/20"
         >
-          {isSpinning ? "SPINNING..." : "🎰 SPIN NOW!"}
+          {isSpinning ? "..." : "FAIRE TOURNER"}
         </Button>
       </motion.div>
 
-      {spinsRemaining === 0 && <p className="text-orange-600 font-semibold mt-4">Plus de lancers disponibles</p>}
+      {spinsRemaining === 0 && <p className="text-zinc-500 font-medium mt-6 text-sm uppercase tracking-wider">Plus de lancers disponibles</p>}
     </div>
   )
 }

@@ -17,13 +17,23 @@ interface SuccessConfirmationProps {
 
 export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: SuccessConfirmationProps) {
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center px-4 py-8 font-sans">
+    <div className="min-h-screen bg-[#FFFDD0] flex items-center justify-center px-4 py-8 font-sans">
       <motion.div
-        className="w-full max-w-md text-center bg-white rounded-xl p-6 shadow-[8px_8px_0_rgba(0,0,0,0.2)] border-4 border-black"
+        className="w-full max-w-md text-center bg-white border-4 border-black p-8 shadow-[12px_12px_0_#000] relative transform rotate-1"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
+        {/* Pizza Steve Celebration */}
+        <motion.div
+            className="absolute -top-20 -right-8 w-32 h-32 md:w-40 md:h-40 z-20 pointer-events-none"
+            initial={{ scale: 0, rotate: -45 }}
+            animate={{ scale: 1, rotate: 12 }}
+            transition={{ delay: 0.6, type: "spring" }}
+        >
+             <img src="/pizza_steve.png" alt="Pizza Steve" className="w-full h-full object-contain drop-shadow-[4px_4px_0_#000]" />
+        </motion.div>
+
         {/* Success Checkmark */}
         <motion.div
           className="mb-8 flex justify-center"
@@ -37,15 +47,15 @@ export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: 
           }}
         >
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center border-4 border-black shadow-[4px_4px_0_rgba(0,0,0,1)]">
-              <Check className="w-12 h-12 text-white font-bold" />
+            <div className="w-24 h-24 bg-[#000] flex items-center justify-center border-4 border-black shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+              <Check className="w-12 h-12 text-[#FF007F] font-bold" strokeWidth={4} />
             </div>
           </div>
         </motion.div>
 
         {/* Success Title */}
         <motion.h1
-          className="text-3xl font-black text-black mb-2 uppercase"
+          className="text-4xl font-black text-[#FF007F] mb-2 uppercase drop-shadow-[2px_2px_0_#000]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -54,66 +64,67 @@ export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: 
         </motion.h1>
 
         <motion.p
-          className="text-gray-600 mb-8 font-bold"
+          className="text-black mb-8 font-bold text-lg uppercase"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          Ton cadeau t'attend sagement.
+          Ton cadeau t'attend !
         </motion.p>
 
         {/* Confirmation Details Card */}
         <motion.div
-          className="bg-muted rounded-xl p-4 border-2 border-black mb-8 space-y-4 text-left"
+          className="bg-[#FFFDD0] border-4 border-black p-4 mb-8 space-y-4 text-left"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
           {/* Prize Won */}
-          <div className="flex items-center justify-between pb-2 border-b-2 border-dashed border-gray-300">
-            <span className="text-gray-600 font-bold uppercase text-sm">Cadeau:</span>
-            <span className="text-lg font-black text-primary">
+          <div className="flex items-center justify-between pb-2 border-b-2 border-black border-dashed">
+            <span className="text-black font-bold uppercase text-sm">Cadeau:</span>
+            <span className="text-lg font-black text-[#FF007F]">
               {prize.emoji} {prize.name}
             </span>
           </div>
 
           {/* Name */}
-          <div className="flex items-center justify-between pb-2 border-b-2 border-dashed border-gray-300">
-            <span className="text-gray-600 font-bold uppercase text-sm">Prénom:</span>
-            <span className="font-bold text-black">{userName}</span>
+          <div className="flex items-center justify-between pb-2 border-b-2 border-black border-dashed">
+            <span className="text-black font-bold uppercase text-sm">Prénom:</span>
+            <span className="font-bold text-black uppercase">{userName}</span>
           </div>
 
           {/* Email */}
           <div className="flex items-center justify-between">
-            <span className="text-gray-600 font-bold uppercase text-sm">Email:</span>
-            <span className="font-bold text-black">{userEmail}</span>
+            <span className="text-black font-bold uppercase text-sm">Email:</span>
+            <span className="font-bold text-black uppercase">{userEmail}</span>
           </div>
         </motion.div>
 
         {/* Instructions */}
         <motion.div
-          className="bg-accent/20 border-2 border-accent rounded-lg p-4 mb-8"
+          className="bg-[#FF4500] border-4 border-black p-4 mb-8 text-white shadow-[4px_4px_0_#000]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-sm text-black font-bold">
-            ℹ️ Présente ce ticket (ou ton email de confirmation) en caisse pour récupérer ton lot.
+          <p className="text-sm font-black uppercase">
+            ⚠️ Présente cet écran au comptoir pour récupérer ton cadeau.
           </p>
         </motion.div>
 
-        {/* Primary CTA */}
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        {/* Footer Button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
           <Button
             onClick={onComplete}
-            className="w-full bg-accent text-black font-black text-xl py-6 rounded-xl border-4 border-black shadow-[4px_4px_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0_rgba(0,0,0,1)] transition-all uppercase"
+            className="w-full bg-black text-white font-black text-xl py-6 border-4 border-black hover:bg-zinc-800 transition-all uppercase rounded-none"
           >
-            C'EST NOTÉ !
+            TERMINÉ
           </Button>
         </motion.div>
-
-        {/* Footer Text */}
-        <p className="text-sm text-gray-500 mt-6 font-bold uppercase">Tes cadeaux sont bien au chaud.</p>
       </motion.div>
     </div>
   )

@@ -1,18 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { LandingPage } from "./landing-page"
-import { PrizeWheel } from "./prize-wheel"
+// import { PrizeWheel, Prize } from "./prize-wheel" // Deprecated
+import { SlotMachine } from "./slot-machine"
+import { Prize } from "./prize-wheel" // Keeping type import for now
 import { PrizeResults } from "./prize-results"
 import { SuccessConfirmation } from "./success-confirmation"
 import { ErrorAlreadyUsed, ErrorInvalidQR, ErrorNoSpins } from "./error-states"
-
-interface Prize {
-  id: string
-  name: string
-  emoji: string
-  color: string
-}
+import { supabaseClient } from "@/lib/supabase"
 
 type AppState =
   | "landing"
@@ -24,7 +20,7 @@ type AppState =
   | "error-invalid"
   | "error-no-spins"
 
-const SPINS_PER_TICKET = 3
+const SPINS_PER_TICKET = 1
 
 export function PizzaRouletteApp() {
   const [currentState, setCurrentState] = useState<AppState>("landing")
@@ -35,6 +31,34 @@ export function PizzaRouletteApp() {
   const [userInfo, setUserInfo] = useState({ name: "", email: "" })
   const [errorType, setErrorType] = useState<"used" | "invalid" | "no-spins" | "daily-limit" | null>(null)
   const [spinIds, setSpinIds] = useState<string[]>([])
+  const [prizes, setPrizes] = useState<Prize[]>([])
+
+  useEffect(() => {
+    const fetchPrizes = async () => {
+      const { data, error } = await supabaseClient
+        .from("prizes")
+        .select("*")
+        .eq("active", true)
+        .order("name")
+      
+      if (error) {
+        console.error("Error fetching prizes:", error)
+        return
+      }
+
+      if (data) {
+        setPrizes(data.map(p => ({
+          id: p.id,
+          name: p.name,
+          emoji: p.emoji,
+          image_url: p.image_url,
+          color: p.color
+        })))
+      }
+    }
+
+    fetchPrizes()
+  }, [])
 
   const handleStartScan = async () => {
     // Check daily limit
@@ -81,28 +105,17 @@ export function PizzaRouletteApp() {
     }
   }
 
-  const handleSpinComplete = async (_prize: Prize) => {
-    if (!ticketId) return
-    const spinType = "simple" // Frontend wheel does not differentiate; backend weights handle types; adjust if needed
-    const res = await fetch("/api/spin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ticket_id: ticketId, spin_type: spinType }),
-    })
-    const data = await res.json()
-    if (!res.ok) {
-      if (res.status === 400 && data.error_code === "no_spins") {
-        setCurrentState("error-no-spins")
-      }
-      return
-    }
+  const handleSpinComplete = async (spinResult: any) => {
+    // spinResult comes from PrizeWheel which got it from /api/spin
     const prize: Prize = {
-      id: data.prize_id,
-      name: data.prize_name,
-      emoji: data.prize_emoji,
-      color: data.prize_color,
+      id: spinResult.prize_id,
+      name: spinResult.prize_name,
+      emoji: spinResult.prize_emoji,
+      image_url: spinResult.prize_image,
+      color: spinResult.prize_color,
     }
-    setSpinIds((ids) => [...ids, data.spin_id])
+    
+    setSpinIds((ids) => [...ids, spinResult.spin_id])
     setCurrentPrize(prize)
     setWonPrizes((prev) => [...prev, prize])
     setSpinsRemaining((prev) => Math.max(prev - 1, 0))
@@ -146,16 +159,21 @@ export function PizzaRouletteApp() {
       {currentState === "landing" && <LandingPage onStartScan={handleStartScan} />}
       
       {currentState === "verifying" && (
-        <div className="fixed inset-0 bg-[#fffcf5] flex items-center justify-center text-black">
+        <div className="fixed inset-0 bg-[#FFFDD0] flex items-center justify-center text-black font-sans z-50">
           <div className="text-center">
-             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#e63946] mx-auto mb-4"></div>
-             <p className="text-xl font-bold">Vérification en cours...</p>
+             <div className="animate-spin rounded-full h-20 w-20 border-t-8 border-b-8 border-[#FF007F] border-r-8 border-r-transparent border-l-8 border-l-transparent mx-auto mb-6"></div>
+             <p className="text-2xl font-black uppercase tracking-widest animate-pulse">Vérification...</p>
           </div>
         </div>
       )}
 
       {currentState === "wheel" && currentPrize === null && (
-        <PrizeWheel onSpinComplete={handleSpinComplete} spinsRemaining={spinsRemaining} />
+        <SlotMachine 
+          prizes={prizes}
+          ticketId={ticketId}
+          onSpinComplete={handleSpinComplete} 
+          spinsRemaining={spinsRemaining} 
+        />
       )}
 
       {currentState === "results" && currentPrize && (

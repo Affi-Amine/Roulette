@@ -11,6 +11,7 @@ interface Prize {
   id: string
   name: string
   emoji: string
+  image_url?: string | null
   color: string
 }
 
@@ -55,154 +56,112 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
     onClaim(name, email)
   }
 
+  const isLoss = prize.name.toLowerCase().includes("better luck") || prize.name.toLowerCase().includes("perdu") || prize.name.toLowerCase().includes("try again") || prize.name.toLowerCase().includes("dommage")
+
   return (
-    <div className="min-h-screen bg-[#fffcf5] flex items-center justify-center px-4 py-8">
+    <div className="min-h-[100dvh] bg-[#FFFDD0] flex items-center justify-center px-4 py-8 font-sans relative overflow-x-hidden">
+      
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "radial-gradient(#FF007F 3px, transparent 3px)", backgroundSize: "40px 40px" }}></div>
+
       <motion.div
         className="w-full max-w-md"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
       >
-        {/* Celebration Header */}
-        <motion.div
-          className="text-center mb-8"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-        >
-          <h1 className="text-4xl font-bold text-[#e63946] mb-2 font-black uppercase">Félicitations !</h1>
-          <p className="text-black font-medium">Tu as gagné un cadeau !</p>
-        </motion.div>
-
-        {/* Prize Card with Glow */}
-        <motion.div
-          className="relative mb-8 p-8 bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-black"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {/* Brand Glow Background */}
-          <div
-            className="absolute inset-0 opacity-20 blur-3xl"
-            style={{
-              background: `radial-gradient(circle at center, #f9c80e, transparent)`,
-            }}
-          />
-
-          <div className="relative z-10 text-center">
-            {/* Prize Emoji */}
-            <motion.div
-              className="text-8xl mb-4"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+        {/* Result Card */}
+        <div className="bg-white border-4 border-black p-4 md:p-8 shadow-[8px_8px_0_#000] md:shadow-[12px_12px_0_#000] relative transform -rotate-1">
+          
+          {/* Pizza Steve for Winners */}
+          {!isLoss && (
+            <motion.div 
+                className="absolute -top-20 -left-8 md:-left-12 w-32 h-32 md:w-40 md:h-40 z-20 pointer-events-none"
+                initial={{ scale: 0, rotate: -45 }}
+                animate={{ scale: 1, rotate: -15 }}
+                transition={{ delay: 0.3, type: "spring" }}
             >
-              {prize.emoji}
+                 <img src="/pizza_steve.png" alt="Pizza Steve" className="w-full h-full object-contain drop-shadow-[4px_4px_0_#000]" />
             </motion.div>
+          )}
 
-            {/* Prize Name */}
-            <h2 className="text-2xl font-bold text-black mb-2 font-black uppercase">{prize.name}</h2>
+          {/* Confetti / Decor */}
+          <div className="absolute -top-4 -right-4 md:-top-6 md:-right-6 text-4xl md:text-6xl rotate-12 animate-bounce">
+            {isLoss ? "😢" : "🎉"}
+          </div>
 
-            {/* Prize Badge */}
-            <div
-              className="inline-block px-4 py-2 rounded-full text-white font-semibold"
-              style={{ backgroundColor: prize.color }}
-            >
-              Gagné !
+          {/* Header */}
+          <div className="text-center mb-4 md:mb-8">
+            <h1 className={`text-3xl md:text-5xl font-black uppercase mb-1 md:mb-2 drop-shadow-[2px_2px_0_#000] ${isLoss ? "text-black" : "text-[#FF007F]"}`}>
+              {isLoss ? "OH NON..." : "MAMMA MIA!"}
+            </h1>
+            <p className="text-black font-bold uppercase tracking-wide text-xs md:text-base">
+              {isLoss ? "C'est pas ton jour..." : "TU AS GAGNÉ :"}
+            </p>
+          </div>
+
+          {/* Prize Display */}
+          <div className="mb-4 md:mb-8 flex flex-col items-center justify-center bg-[#FFFDD0] border-4 border-black p-3 md:p-6 rotate-1">
+             {prize.image_url ? (
+                <img 
+                  src={prize.image_url} 
+                  alt={prize.name} 
+                  className="max-h-20 md:max-h-32 max-w-full object-contain drop-shadow-md mb-2 md:mb-4"
+                />
+              ) : (
+                <span className="text-5xl md:text-8xl drop-shadow-md filter mb-2 md:mb-4">{prize.emoji}</span>
+              )}
+             <h2 className="text-lg md:text-2xl font-black text-center uppercase text-black leading-tight">
+               {prize.name}
+             </h2>
+          </div>
+
+          {/* Form or Loss Action */}
+          {!isLoss ? (
+            <form onSubmit={handleSubmit} className="space-y-2 md:space-y-4">
+              <div>
+                <label className="block text-xs md:text-sm font-black uppercase mb-1">Ton Prénom</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={`w-full bg-white border-4 ${errors.name ? "border-red-500" : "border-black"} p-2 md:p-3 font-bold text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-[#FF007F]/20 transition-all`}
+                  placeholder="LUIGI"
+                />
+                {errors.name && <p className="text-red-500 text-[10px] md:text-xs font-bold mt-1 uppercase">{errors.name}</p>}
+              </div>
+
+              <div>
+                <label className="block text-xs md:text-sm font-black uppercase mb-1">Ton Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`w-full bg-white border-4 ${errors.email ? "border-red-500" : "border-black"} p-2 md:p-3 font-bold text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-[#FF007F]/20 transition-all`}
+                  placeholder="LUIGI@PIZZA.COM"
+                />
+                {errors.email && <p className="text-red-500 text-[10px] md:text-xs font-bold mt-1 uppercase">{errors.email}</p>}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white font-black text-lg md:text-xl py-4 md:py-6 border-4 border-black shadow-[4px_4px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-y-[2px] transition-all uppercase rounded-none mt-2 md:mt-4"
+              >
+                {isSubmitting ? "Validation..." : "RÉCUPÉRER MON CADEAU"}
+              </Button>
+            </form>
+          ) : (
+            <div className="text-center">
+              <p className="mb-4 md:mb-6 font-bold text-sm md:text-base">Retente ta chance demain !</p>
+              <Button
+                onClick={onBack}
+                className="w-full bg-black text-white font-black text-lg md:text-xl py-4 md:py-6 border-4 border-black hover:bg-zinc-800 transition-all uppercase rounded-none"
+              >
+                RETOUR
+              </Button>
             </div>
-          </div>
-        </motion.div>
-
-        {/* Form Section */}
-        <motion.form
-          onSubmit={handleSubmit}
-          className="space-y-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {/* Name Input */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-black mb-2">
-              Prénom
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value)
-                if (errors.name) setErrors({ ...errors, name: undefined })
-              }}
-              placeholder="Ton prénom"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
-                errors.name ? "border-[#e63946] bg-red-50" : "border-black focus:border-[#e63946]"
-              } focus:outline-none bg-white text-black`}
-            />
-            {errors.name && (
-              <motion.p
-                className="text-[#e63946] text-sm mt-1 flex items-center gap-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <AlertCircle className="w-4 h-4" />
-                {errors.name}
-              </motion.p>
-            )}
-          </div>
-
-          {/* Email Input */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-black mb-2">
-              Adresse Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-                if (errors.email) setErrors({ ...errors, email: undefined })
-              }}
-              placeholder="ton.email@exemple.com"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition-colors ${
-                errors.email ? "border-[#e63946] bg-red-50" : "border-black focus:border-[#e63946]"
-              } focus:outline-none bg-white text-black`}
-            />
-            {errors.email && (
-              <motion.p
-                className="text-[#e63946] text-sm mt-1 flex items-center gap-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <AlertCircle className="w-4 h-4" />
-                {errors.email}
-              </motion.p>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="pt-2">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[#e63946] hover:bg-[#d62839] disabled:opacity-50 text-white font-bold text-lg py-6 rounded-xl shadow-lg transition-all uppercase"
-            >
-              {isSubmitting ? "Enregistrement..." : "RÉCUPÉRER MON CADEAU !"}
-            </Button>
-          </motion.div>
-
-          {/* Back Button */}
-          <button
-            type="button"
-            onClick={onBack}
-            className="w-full text-black hover:text-[#e63946] font-semibold py-2 transition-colors hidden"
-          >
-            Retour à l'accueil
-          </button>
-        </motion.form>
-
-        {/* Trust Note */}
-        <div className="text-center mt-6 text-sm text-gray-500">
-          <p>Vos informations sont sécurisées et ne seront utilisées que pour traiter votre gain.</p>
+          )}
         </div>
       </motion.div>
     </div>

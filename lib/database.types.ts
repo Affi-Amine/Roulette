@@ -66,6 +66,7 @@ export interface Database {
           id: string
           name: string
           emoji: string
+          image_url: string | null
           color: string
           weight_simple: number
           weight_premium: number
@@ -76,6 +77,7 @@ export interface Database {
           id?: string
           name: string
           emoji: string
+          image_url?: string | null
           color: string
           weight_simple: number
           weight_premium: number
@@ -86,6 +88,7 @@ export interface Database {
           id?: string
           name?: string
           emoji?: string
+          image_url?: string | null
           color?: string
           weight_simple?: number
           weight_premium?: number

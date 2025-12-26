@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     prize_id: (prize as any)?.id,
     prize_name: (prize as any)?.name,
     prize_emoji: (prize as any)?.emoji,
+    prize_image: (prize as any)?.image_url,
     prize_color: (prize as any)?.color,
   })
 }
