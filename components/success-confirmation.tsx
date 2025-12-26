@@ -55,7 +55,7 @@ export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: 
 
         {/* Success Title */}
         <motion.h1
-          className="text-4xl font-black text-[#FF007F] mb-2 uppercase drop-shadow-[2px_2px_0_#000]"
+          className="text-3xl md:text-4xl font-black text-[#FF007F] mb-2 uppercase drop-shadow-[2px_2px_0_#000]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}

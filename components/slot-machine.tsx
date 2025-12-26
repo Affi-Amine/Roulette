@@ -121,7 +121,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
     )
   }
   
-  const handleReelStop = () => {
+  const handleReelStop = useCallback(() => {
       setReelsStopped(prev => {
           const newState = prev + 1
           if (newState >= 3) {
@@ -131,7 +131,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
           }
           return newState
       })
-  }
+  }, [])
 
   const handleSpinWithData = async () => {
     if (isSpinning || spinsRemaining <= 0) return

@@ -32,7 +32,7 @@
   --muted-foreground: #6b7280;
   --border: #000000; /* Bold borders */
   --input: #ffffff;
-  --ring: #FF007F;
+  --ring: #000000;
   
   --radius: 0rem; /* Sharp edges for street style */
 }
@@ -58,7 +58,7 @@
   --destructive-foreground: #ffffff;
   --border: #FFFDD0;
   --input: #1a1a1a;
-  --ring: #FF007F;
+  --ring: #000000;
   --chart-1: #FF007F;
   --chart-2: #FF4500;
   --chart-3: #FFFDD0;

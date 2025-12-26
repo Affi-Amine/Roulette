@@ -137,7 +137,7 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full bg-white border-4 ${errors.email ? "border-red-500" : "border-black"} p-2 md:p-3 font-bold text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-[#FF007F]/20 transition-all`}
+                  className={`w-full bg-white border-4 ${errors.email ? "border-red-500" : "border-black"} p-2 md:p-3 font-bold text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-black/20 transition-all`}
                   placeholder="LUIGI@PIZZA.COM"
                 />
                 {errors.email && <p className="text-red-500 text-[10px] md:text-xs font-bold mt-1 uppercase">{errors.email}</p>}

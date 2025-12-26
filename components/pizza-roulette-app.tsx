@@ -161,7 +161,7 @@ export function PizzaRouletteApp() {
       {currentState === "verifying" && (
         <div className="fixed inset-0 bg-[#FFFDD0] flex items-center justify-center text-black font-sans z-50">
           <div className="text-center">
-             <div className="animate-spin rounded-full h-20 w-20 border-t-8 border-b-8 border-[#FF007F] border-r-8 border-r-transparent border-l-8 border-l-transparent mx-auto mb-6"></div>
+             <div className="animate-spin rounded-full h-20 w-20 border-t-8 border-b-8 border-black border-r-8 border-r-transparent border-l-8 border-l-transparent mx-auto mb-6"></div>
              <p className="text-2xl font-black uppercase tracking-widest animate-pulse">Vérification...</p>
           </div>
         </div>
