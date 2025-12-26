@@ -182,39 +182,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
       {/* Background Ambience Pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "radial-gradient(#FF007F 3px, transparent 3px)", backgroundSize: "40px 40px" }}></div>
       
-      {/* Animated Floating Pizza Slices */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-           <motion.div
-             key={i}
-             className="absolute text-6xl opacity-30"
-             animate={{ y: [-20, 20], rotate: [0, 360] }}
-             transition={{ duration: 5 + i, repeat: Infinity, ease: "linear" }}
-             style={{ top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%` }}
-           >
-             🍕
-           </motion.div>
-        ))}
-        {/* Pizza Steve Mascot */}
-        <motion.div 
-            className="absolute bottom-[-50px] left-[-20px] md:bottom-[-40px] md:left-10 z-0 opacity-80"
-            animate={{ 
-                y: [0, -20, 0],
-                rotate: [-10, 0, -10]
-            }}
-            transition={{ 
-                duration: 4, 
-                repeat: Number.POSITIVE_INFINITY, 
-                ease: "easeInOut" 
-            }}
-        >
-            <img 
-                src="/pizza_steve.png" 
-                alt="Pizza Steve" 
-                className="w-40 h-40 md:w-64 md:h-64 object-contain drop-shadow-[4px_4px_0_rgba(0,0,0,0.2)]" 
-            />
-        </motion.div>
-      </div>
+
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
         <div className="flex flex-col items-center justify-center w-full scale-[0.65] sm:scale-[0.8] md:scale-100 origin-center transition-transform duration-300">
