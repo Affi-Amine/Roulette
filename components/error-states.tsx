@@ -11,7 +11,7 @@ interface ErrorAlreadyUsedProps {
 export function ErrorAlreadyUsed({ onRetry }: ErrorAlreadyUsedProps) {
   return (
     <motion.div
-      className="fixed inset-0 bg-[#FFFDD0]/90 flex items-center justify-center p-4 font-sans"
+      className="fixed inset-0 bg-[#24d6dd]/90 flex items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -61,7 +61,7 @@ interface ErrorInvalidQRProps {
 export function ErrorInvalidQR({ onRetry }: ErrorInvalidQRProps) {
   return (
     <motion.div
-      className="fixed inset-0 bg-[#FFFDD0]/90 flex items-center justify-center p-4 font-sans"
+      className="fixed inset-0 bg-[#24d6dd]/90 flex items-center justify-center p-4 font-sans"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >

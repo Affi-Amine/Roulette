@@ -26,6 +26,9 @@ export async function GET(req: NextRequest) {
         name,
         emoji,
         color
+      ),
+      spins (
+        ticket_id
       )
     `)
     .order("created_at", { ascending: false })
@@ -51,7 +54,8 @@ export async function GET(req: NextRequest) {
     filteredWins = wins.filter((win: any) => {
       const userName = win.users?.name?.toLowerCase() || ""
       const userEmail = win.users?.email?.toLowerCase() || ""
-      return userName.includes(lowerSearch) || userEmail.includes(lowerSearch)
+      const ticketId = win.spins?.ticket_id?.toLowerCase() || ""
+      return userName.includes(lowerSearch) || userEmail.includes(lowerSearch) || ticketId.includes(lowerSearch)
     })
   }
 
@@ -68,6 +72,7 @@ export async function GET(req: NextRequest) {
       emoji: win.prizes?.emoji,
       color: win.prizes?.color,
     },
+    ticketId: win.spins?.ticket_id,
     status: win.status,
     wonAt: win.created_at,
     validatedAt: win.validated_at,

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Search, Filter, CheckCircle, Clock, ArrowLeft, Gift, Calendar, User } from "lucide-react"
+import { Search, Filter, CheckCircle, Clock, ArrowLeft, Gift, Calendar, User, Ticket } from "lucide-react"
 
 export default function AdminWinsPage() {
   const [wins, setWins] = useState<any[]>([])
@@ -82,7 +82,7 @@ export default function AdminWinsPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Rechercher par nom ou email..."
+              placeholder="Rechercher par nom, email ou ticket..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
@@ -129,6 +129,15 @@ export default function AdminWinsPage() {
                             <User className="w-3 h-3" />
                             <span className="font-medium text-gray-700">{win.user.name}</span>
                           </div>
+                          {win.ticketId && (
+                            <>
+                              <div className="hidden md:block w-1 h-1 rounded-full bg-gray-300"></div>
+                              <div className="flex items-center gap-1">
+                                <Ticket className="w-3 h-3" />
+                                <span className="font-mono text-xs">{win.ticketId}</span>
+                              </div>
+                            </>
+                          )}
                           <div className="hidden md:block w-1 h-1 rounded-full bg-gray-300"></div>
                           <div className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />

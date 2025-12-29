@@ -17,7 +17,7 @@ interface SuccessConfirmationProps {
 
 export function SuccessConfirmation({ userName, userEmail, prize, onComplete }: SuccessConfirmationProps) {
   return (
-    <div className="min-h-screen bg-[#FFFDD0] flex items-center justify-center px-4 py-8 font-sans">
+    <div className="min-h-screen bg-[#24d6dd] flex items-center justify-center px-4 py-8 font-sans">
       <motion.div
         className="w-full max-w-md text-center bg-white border-4 border-black p-8 shadow-[12px_12px_0_#000] relative transform rotate-1"
         initial={{ opacity: 0, scale: 0.8 }}

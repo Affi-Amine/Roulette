@@ -1,12 +1,25 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "./ui/button"
 import { Zap, Gift, Smile, Ticket } from "lucide-react"
 
-export function LandingPage({ onStartScan }: { onStartScan: () => void }) {
+export function LandingPage({ onStartScan }: { onStartScan: (ticketId: string) => void }) {
+  const [ticketInput, setTicketInput] = useState("")
+  const [error, setError] = useState("")
+
+  const handleSubmit = () => {
+    if (!ticketInput.trim()) {
+      setError("Entre ton numéro de ticket !")
+      return
+    }
+    setError("")
+    onStartScan(ticketInput)
+  }
+
   return (
-    <div className="min-h-[100dvh] w-full bg-[#FFFDD0] flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden font-sans">
+    <div className="min-h-[100dvh] w-full bg-[#24d6dd] flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden font-sans">
       
       {/* Floating Background Elements (Mascots) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -106,19 +119,43 @@ export function LandingPage({ onStartScan }: { onStartScan: () => void }) {
             </div>
             </div>
 
-            {/* CTA Button */}
+            {/* Ticket Input & CTA */}
             <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            className="shrink-0 w-full max-w-[320px] md:max-w-full"
+            className="shrink-0 w-full max-w-[320px] md:max-w-full flex flex-col gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
             >
-            <Button
-                size="lg"
-                onClick={onStartScan}
-                className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white font-black text-xl md:text-2xl py-6 md:py-8 border-4 border-black shadow-[4px_4px_0_#000] md:shadow-[6px_6px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-y-[2px] transition-all uppercase rounded-none"
-            >
-                TENTER MA CHANCE 🎲
-            </Button>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="NUMÉRO DE TICKET"
+                  value={ticketInput}
+                  onChange={(e) => {
+                    setTicketInput(e.target.value)
+                    if (error) setError("")
+                  }}
+                  className="w-full bg-white border-4 border-black p-4 text-center font-bold text-xl uppercase placeholder:text-gray-300 focus:outline-none focus:ring-4 focus:ring-[#FF007F] shadow-[4px_4px_0_#000]"
+                />
+                {error && (
+                  <p className="absolute -bottom-6 left-0 right-0 text-[#FF007F] text-xs font-black uppercase">
+                    {error}
+                  </p>
+                )}
+              </div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }} 
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                    size="lg"
+                    onClick={handleSubmit}
+                    className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white font-black text-xl md:text-2xl py-6 md:py-8 border-4 border-black shadow-[4px_4px_0_#000] md:shadow-[6px_6px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-y-[2px] transition-all uppercase rounded-none"
+                >
+                    TENTER MA CHANCE 🎲
+                </Button>
+              </motion.div>
             </motion.div>
 
             <p className="mt-4 text-black/60 text-[10px] md:text-xs font-bold uppercase tracking-widest shrink-0">

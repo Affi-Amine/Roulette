@@ -59,7 +59,7 @@ export function PrizeResults({ prize, onClaim, onBack }: PrizeResultsProps) {
   const isLoss = prize.name.toLowerCase().includes("better luck") || prize.name.toLowerCase().includes("perdu") || prize.name.toLowerCase().includes("try again") || prize.name.toLowerCase().includes("dommage")
 
   return (
-    <div className="min-h-[100dvh] bg-[#FFFDD0] flex items-center justify-center px-4 py-8 font-sans relative overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-[#24d6dd] flex items-center justify-center px-4 py-8 font-sans relative overflow-x-hidden">
       
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "radial-gradient(#FF007F 3px, transparent 3px)", backgroundSize: "40px 40px" }}></div>

@@ -75,7 +75,7 @@ export default function AdminSpinsPage() {
                         <div className="hidden md:block w-1 h-1 rounded-full bg-gray-300"></div>
                         <div className="flex items-center gap-1">
                           <Ticket className="w-3 h-3" />
-                          <span className="font-mono text-xs">{spin.ticket_id.split('-')[0]}...</span>
+                          <span className="font-mono text-xs">{spin.ticket_id}</span>
                         </div>
                       </div>
                     </div>

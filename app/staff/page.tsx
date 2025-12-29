@@ -70,7 +70,7 @@ export default function StaffPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && search()}
-              placeholder="Rechercher par Nom ou Email..."
+              placeholder="Rechercher par Nom, Email ou N° Ticket..."
               className="flex-1 px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-black rounded-xl text-lg outline-none transition-all placeholder:text-gray-400 font-medium"
             />
             <button 

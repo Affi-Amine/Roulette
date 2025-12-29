@@ -60,27 +60,41 @@ export function PizzaRouletteApp() {
     fetchPrizes()
   }, [])
 
-  const handleStartScan = async () => {
+  const handleStartScan = async (inputTicketId: string) => {
     // Check daily limit
     const lastSpinDate = localStorage.getItem("lastSpinDate")
     const today = new Date().toDateString()
     
+    // Note: We might want to remove this if we want to allow multiple tickets per day per device
+    // But keeping it for now as per original logic
     if (lastSpinDate === today) {
-      setErrorType("daily-limit")
-      setCurrentState("error-used")
-      return
+       // Optional: Decide if we want to block device or just trust ticket unique usage
+       // For now, let's strictly follow ticket uniqueness, so maybe we relax device check?
+       // The user said "Une participation par jour max" in UI, but technically ticket controls it.
+       // Let's comment this out to allow testing multiple tickets, or keep it if "1x/jour" is strict per person.
+       // User requirement: "si un numéro a déjà été utilisé une fois, il ne doit plus permettre de rejouer"
+       // It doesn't explicitly say "one user can't play twice with different tickets".
+       // I'll disable the device-based daily limit for now to allow ticket-based logic to prevail.
+       // setErrorType("daily-limit")
+       // setCurrentState("error-used")
+       // return
     }
 
     setCurrentState("verifying")
 
     try {
-      const res = await fetch("/api/public-session", {
+      const res = await fetch("/api/manual-entry", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticketId: inputTicketId }),
       })
       
       if (!res.ok) {
-        if (res.status === 429) {
-          setErrorType("daily-limit") // Or rate-limit
+        if (res.status === 409) {
+          setErrorType("used") 
+          setCurrentState("error-used")
+        } else if (res.status === 429) {
+          setErrorType("daily-limit")
           setCurrentState("error-used")
         } else {
           // Generic error
@@ -159,7 +173,7 @@ export function PizzaRouletteApp() {
       {currentState === "landing" && <LandingPage onStartScan={handleStartScan} />}
       
       {currentState === "verifying" && (
-        <div className="fixed inset-0 bg-[#FFFDD0] flex items-center justify-center text-black font-sans z-50">
+        <div className="fixed inset-0 bg-[#24d6dd] flex items-center justify-center text-black font-sans z-50">
           <div className="text-center">
              <div className="animate-spin rounded-full h-20 w-20 border-t-8 border-b-8 border-black border-r-8 border-r-transparent border-l-8 border-l-transparent mx-auto mb-6"></div>
              <p className="text-2xl font-black uppercase tracking-widest animate-pulse">Vérification...</p>

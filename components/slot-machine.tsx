@@ -112,7 +112,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
 
   if (prizes.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FFFDD0] flex items-center justify-center text-black font-black text-xl animate-pulse uppercase">
+      <div className="min-h-screen bg-[#24d6dd] flex items-center justify-center text-black font-black text-xl animate-pulse uppercase">
         Chargement des pizzas...
       </div>
     )
@@ -174,7 +174,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-[#FFFDD0] px-2 py-8 font-sans relative overflow-x-hidden">
+    <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-[#24d6dd] px-2 py-8 font-sans relative overflow-x-hidden">
       
       {/* Background Ambience Pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "radial-gradient(#FF007F 3px, transparent 3px)", backgroundSize: "40px 40px" }}></div>
@@ -185,16 +185,18 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
         <div className="flex flex-col items-center justify-center w-full scale-[0.65] sm:scale-[0.8] md:scale-100 origin-center transition-transform duration-300">
             {/* Title */}
             <motion.div 
-                className="text-center mb-6 relative z-10 shrink-0"
+                className="text-center mb-6 relative z-10 shrink-0 flex flex-col items-center"
                 initial={{ opacity: 0, y: -20, rotate: -2 }} 
                 animate={{ opacity: 1, y: 0, rotate: -2 }}
             >
-                <div className="inline-block bg-black text-white px-4 py-1 md:px-6 md:py-2 transform -rotate-2 mb-2 border-2 border-white shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+                <div className="inline-block bg-black text-white px-4 py-1 md:px-6 md:py-2 transform -rotate-2 mb-4 border-2 border-white shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
                     <span className="font-bold tracking-widest uppercase text-xs md:text-base">LA ROUE DE LA FORTUNE</span>
                 </div>
-                <h1 className="text-6xl md:text-8xl font-black text-[#FF007F] mb-0 uppercase drop-shadow-[4px_4px_0_#000] md:drop-shadow-[6px_6px_0_#000] tracking-tighter leading-none stroke-black">
-                    JACKPOT<br/><span className="text-black">PIZZA</span>
-                </h1>
+                <img 
+                  src="/mache_logo_no_bg.png" 
+                  alt="MA CHE JACKPOT" 
+                  className="w-48 md:w-72 object-contain drop-shadow-[4px_4px_0_rgba(0,0,0,0.2)]"
+                />
             </motion.div>
 
             {/* Slot Machine Body - Enhanced Cabinet */}
