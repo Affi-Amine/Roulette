@@ -182,7 +182,7 @@ export function SlotMachine({ prizes, ticketId, onSpinComplete, spinsRemaining }
 
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
-        <div className="flex flex-col items-center justify-center w-full scale-[0.65] sm:scale-[0.8] md:scale-100 origin-center transition-transform duration-300">
+        <div className="flex flex-col items-center justify-center w-full scale-[0.85] sm:scale-[0.9] md:scale-100 origin-center transition-transform duration-300">
             {/* Title */}
             <motion.div 
                 className="text-center mb-6 relative z-10 shrink-0 flex flex-col items-center"
